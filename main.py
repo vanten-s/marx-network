@@ -49,9 +49,27 @@ class Layer:
         return [node.get_output(inputs) for node in self.nodes]
 
 class Network:
-    def __init__(self, n_inputs, n_layers, n_nodes_per_layer, n_outputs, weights=None, biases=None, activation_functions):
+    def __init__(self, n_inputs, n_layers, n_nodes_per_layer, n_outputs, activation_functions, weights=None, biases=None):
         self.activation_functions = activation_functions
         self.n_inputs = n_inputs
         self.n_layers = n_layers
+        self.nodes_per_layes = n_nodes_per_layer
+        self.n_outputs = n_outputs
+        if weights == None:
+            weights = [[[1 for k in range(0, n_nodes_per_layer[i-1])] for j in range(0, n_nodes_per_layer[i])] for i in range(1, n_layers)]
+
+        if biases == None:
+            biases = [[1 for j in range(0, n_nodes_per_layer[i])] for i in range(1, n_layers)]
+
+        self.weights = weights
+        self.biases = biases
+
+        self.layers = []
+        for i in range(1, n_layers):
+            self.layers.append(Layer(n_nodes_per_layer[i], n_nodes_per_layer[i-1], weights[i], biases[i], activation_functions[i]))
+
+
+
+
 
 
