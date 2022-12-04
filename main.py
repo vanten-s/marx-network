@@ -11,7 +11,21 @@ def sigmoid(x):
 def fitness(expected, got):
     return sum([(expected[i]-got[i])**2 for i in range(0, len(expected))])
 
-def iterate()
+def iterate(network, n_networks, radius):
+    copies = [Network(network.n_inputs, network.n_layers, network.n_nodes_per_layer, network.n_outputs, network.activation_functions, network.weights, network.biases) for i in range(0, n_networks)]
+    for copy in copies:
+        copies.randomise_factors(radius)
+
+    best = -1000
+    best_network = copies[0]
+    for copy in copies:
+        fitness = copy.get_fitness()
+        if fitness > best:
+            best = fitness
+            best_network = copy
+
+    return copy
+
 
 class Node:
     def __init__(self, n_inputs, weights, bias, activation_func):
@@ -68,6 +82,13 @@ class Network:
         for i in range(1, n_layers):
             self.layers.append(Layer(n_nodes_per_layer[i], n_nodes_per_layer[i-1], weights[i], biases[i], activation_functions[i]))
 
+    def randomise_factors(self, radius):
+        for layer in self.layers:
+            layer.randomise_factors(radius)
+
+    def get_fitness(self, inputs, expected):
+        print("Not implemented yet")
+        return 0
 
 
 
