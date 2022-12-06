@@ -86,6 +86,13 @@ class Network:
         for layer in self.layers:
             layer.randomise_factors(radius)
 
+    def get_output(self, inputs):
+        prev_layer = inputs
+        for layer in self.layers:
+            prev_layer = layer.get_output(prev_layer)
+
+        return prev_layer
+
     def get_fitness(self, inputs, expected):
         print("Not implemented yet")
         return 0
