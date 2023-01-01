@@ -24,7 +24,7 @@ def iterate(network, n_networks, radius):
             best = fitness
             best_network = copy
 
-    return copy
+    return best_network
 
 
 class Node:
@@ -94,8 +94,12 @@ class Network:
         return prev_layer
 
     def get_fitness(self, inputs, expected):
-        print("Not implemented yet")
-        return 0
+        tot = 0
+        output = self.get_output(inputs)
+        for i in range(0, len(output)):
+            tot += (output[i] - expected[i])**2
+
+        return tot
 
 
 
