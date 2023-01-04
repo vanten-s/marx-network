@@ -11,21 +11,24 @@ def sigmoid(x):
 def fitness(expected, got):
     return sum([(expected[i]-got[i])**2 for i in range(0, len(expected))])
 
-def iterate(network, n_networks, radius):
+def iterate(network, n_networks, radius, f, values):
     copies = [Network(network.n_inputs, network.n_layers, network.n_nodes_per_layer, network.n_outputs, network.activation_functions, network.weights, network.biases) for i in range(0, n_networks)]
     for copy in copies:
         copies.randomise_factors(radius)
 
+    expectations = []
+    for value in values:
+        expectations.append(f(value))
+
     best = -1000
     best_network = copies[0]
     for copy in copies:
-        fitness = copy.get_fitness()
+        fitness = copy.get_fitness(values, expectations)
         if fitness > best:
             best = fitness
             best_network = copy
 
     return best_network
-
 
 class Node:
     def __init__(self, n_inputs, weights, bias, activation_func):
