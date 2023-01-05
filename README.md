@@ -1,2 +1,2 @@
 # marx-network
-Our neural network lib
+Our neural network lib (WIP)
