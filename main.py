@@ -12,9 +12,9 @@ def fitness(expected, got):
     return sum([(expected[i]-got[i])**2 for i in range(0, len(expected))])
 
 def iterate(network, n_networks, radius, f, values):
-    copies = [Network(network.n_inputs, network.n_layers, network.n_nodes_per_layer, network.n_outputs, network.activation_functions, network.weights, network.biases) for i in range(0, n_networks)]
+    copies = [Network(network.n_inputs, network.n_layers, network.nodes_per_layer, network.n_outputs, network.activation_functions, network.weights, network.biases) for i in range(0, n_networks)]
     for copy in copies:
-        copies.randomise_factors(radius)
+        copy.randomise_factors(radius)
 
     expectations = []
     for value in values:
@@ -39,6 +39,7 @@ class Node:
 
     def get_output(self, inputs):
         outputs = []
+        if len( inputs ) != self.n_inputs: raise ValueError( f"Number of inputs has to be correct, expected {self.n_inputs} but got {len(inputs)}" )
         for i in range(0, len(inputs)):
             outputs.append(self.weights[i]*inputs[i])
 
@@ -70,13 +71,13 @@ class Network:
         self.activation_functions = activation_functions
         self.n_inputs = n_inputs
         self.n_layers = n_layers
-        self.nodes_per_layes = n_nodes_per_layer
+        self.nodes_per_layer = n_nodes_per_layer
         self.n_outputs = n_outputs
         if weights == None:
-            weights = [[[1 for k in range(0, n_nodes_per_layer[i-1])] for j in range(0, n_nodes_per_layer[i])] for i in range(1, n_layers)]
+            weights = [[[1 for k in range(0, n_nodes_per_layer[i-1])] for j in range(0, n_nodes_per_layer[i])] for i in range(0, n_layers)]
 
         if biases == None:
-            biases = [[1 for j in range(0, n_nodes_per_layer[i])] for i in range(1, n_layers)]
+            biases = [[1 for j in range(0, n_nodes_per_layer[i])] for i in range(0, n_layers)]
 
         self.weights = weights
         self.biases = biases
